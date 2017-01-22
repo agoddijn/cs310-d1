@@ -1,0 +1,24 @@
+{
+   "WHERE":{
+      "OR":[
+         {
+            "IS":{
+               "courses_id":"1000"
+            }
+         },
+         {
+            "IS":{
+               "courses_avg":"2000"
+            }
+         }
+      ]
+   },
+   "OPTIONS":{
+      "COLUMNS":[
+         "courses_dept",
+         "courses_avg"
+      ],
+      "ORDER":"courses_avg",
+      "FORM":"TABLE"
+   }
+}
