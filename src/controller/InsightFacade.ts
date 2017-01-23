@@ -4,6 +4,7 @@
 import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 
 import Log from "../Util";
+import ZipParser from "./ZipParser";
 
 export default class InsightFacade implements IInsightFacade {
 
@@ -12,7 +13,17 @@ export default class InsightFacade implements IInsightFacade {
     }
 
     addDataset(id: string, content: string): Promise<InsightResponse> {
-        return null;
+        var parser = new ZipParser();
+        return new Promise(function(fulfill, reject) {
+            parser.parse(content).then(function(data: Course[]){
+
+            }).catch(function(err: any){
+                Log.error("Error in InsightFacade.addDataset() [zipParser.parse()]");
+                Log.error(err);
+                reject(err);
+                // TODO
+            });
+        });
     }
 
     removeDataset(id: string): Promise<InsightResponse> {

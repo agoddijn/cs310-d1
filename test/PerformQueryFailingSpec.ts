@@ -45,132 +45,132 @@ describe("PerformQueryFailingSpec", function () {
     it("It should throw 400 Query is not valid given null", function () {
         isf.performQuery(null).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.contain({"error":"Query is not valid"});
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.contain({"error":"Query is not valid"});
         });
     });
 
     it("It should throw 400 Query is not valid given undefined", function () {
         isf.performQuery(undefined).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.contain({"error":"Query is not valid"});
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.contain({"error":"Query is not valid"});
         });
     });
 
     it("It should throw 400 Query is not valid given empty JSON object", function () {
         isf.performQuery({}).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal({"error":"Query is not valid"});
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal({"error":"Query is not valid"});
         });
     });
 
     it("It should throw 400 Query is not valid given empty JSON array", function () {
         isf.performQuery([]).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal({"error":"Query is not valid"});
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal({"error":"Query is not valid"});
         });
     });
 
     it("It should throw 400 Query is not valid given an invalid JSON object", function () {
         isf.performQuery('').then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal({"error":"Query is not valid"});
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal({"error":"Query is not valid"});
         });
     });
 
     it("It should throw 400 token not supported given an invalid MCOMPARATOR JSON object", function () {
         isf.performQuery(badReq1).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal(tokNotSupported);
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal(tokNotSupported);
         });
     });
 
     it("It should throw 400 token not supported given an invalid MCOMPARATOR anywhere in the chain", function () {
         isf.performQuery(badReq2).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal(tokNotSupported);
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal(tokNotSupported);
         });
     });
 
     it("It should throw 400 inavlid JSON given an invalid JSON", function () {
         isf.performQuery('invalidJson').then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal(invJson);
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal(invJson);
         });
     });
 
     it("It should throw 400 inavlid JSON given an invalid JSON", function () {
         isf.performQuery('invalidJson').then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal(invJson);
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal(invJson);
         });
     });
 
     it("It should throw 424 not found given a non existent id", function () {
         isf.performQuery(badReq3).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal(notFound1);
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal(notFound1);
         });
     });
 
     it("It should throw 424 not found given multiple non existent id's", function () {
         isf.performQuery(badReq4).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            sanityCheck(res);
-            expect(res.code).to.equal(400);
-            expect(res.body).to.deep.equal(notFound2);
+            expect.fail();
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
-            expect.fail();
+            sanityCheck(err);
+            expect(err.code).to.equal(400);
+            expect(err.body).to.deep.equal(notFound2);
         });
     });
 
