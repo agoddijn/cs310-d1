@@ -13,6 +13,32 @@ export interface QueryRequest {
     // you can define your own structure that complies with the EBNF here
 }
 
+export interface Course {
+    courses_dept: string;
+    courses_id: string;
+    courses_avg: number;
+    courses_instructor: string;
+    courses_title: string;
+    courses_pass: number;
+    courses_fail: number;
+    courses_audit: number;
+}
+
+export interface zipDat {
+    result: Result[];
+}
+
+export interface Result {
+    Subject: string;
+    Course: string;
+    Avg: number;
+    Professor: string;
+    Title: string;
+    Pass: number;
+    Fail: number;
+    Audit: number;
+}
+
 export interface IInsightFacade {
 
     /**
