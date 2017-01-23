@@ -55,7 +55,21 @@ export default class InsightFacade implements IInsightFacade {
 
 
     removeDataset(id: string): Promise<InsightResponse> {
-        return null;
+        return new Promise(function(fulfill, reject) {
+            FileSystem.remove(id).then(function(success: boolean) {
+                if (success) {
+                    Log.info("Data successfully removed");
+                    fulfill({code: 202, body: {}});
+                } else {
+                    Log.error("Data could not be removed");
+                    reject({code: 404, body: {}});
+                }
+            }).catch(function(err: any) {
+                Log.error("Error in removeDataset");
+                Log.error(err);
+                reject({code: 404, body: {error: err.message}});
+            });
+        });
     }
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {

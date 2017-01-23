@@ -52,4 +52,17 @@ export default class FileSystem {
         });
     }
 
+    public static remove(filename: string): Promise<boolean> {
+        return new Promise(function(fulfill, reject) {
+            try {
+                fs.unlinkSync(rootPath + filename);
+                fulfill(true);
+            } catch (err) {
+                Log.error("Error in FileSystem [rmdirSync()]");
+                Log.error(err);
+                reject(err);
+            }
+        })
+    }
+
 }
