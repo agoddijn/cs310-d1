@@ -7,12 +7,6 @@ import Log from "../Util";
 var fs = require("fs");
 var rootPath = "./cache/";
 
-interface IFileSystem {
-    write(filename: string, data: Course[]): Promise<boolean>;
-    read(filename: string): Promise<Course[]>;
-    check(filename: string): Promise<boolean>;
-}
-
 export default class FileSystem {
 
     public static write(filename: string, data: Course[]): Promise<boolean> {
@@ -20,7 +14,7 @@ export default class FileSystem {
             filename = rootPath + filename;
             try {
                 // Create directory
-                fs.mkdirSync(rootPath);
+                if(!fs.existsSync(rootPath)) fs.mkdirSync(rootPath);
                 fs.writeFileSync(filename, JSON.stringify(data));
                 fulfill(true);
             } catch (err) {
@@ -56,6 +50,19 @@ export default class FileSystem {
                 reject(err);
             }
         });
+    }
+
+    public static remove(filename: string): Promise<boolean> {
+        return new Promise(function(fulfill, reject) {
+            try {
+                fs.unlinkSync(rootPath + filename);
+                fulfill(true);
+            } catch (err) {
+                Log.error("Error in FileSystem [rmdirSync()]");
+                Log.error(err);
+                reject(err);
+            }
+        })
     }
 
 }

@@ -45,6 +45,11 @@ describe("AddDatasetPassingSpec", function () {
             }
             isf.addDataset("1", data).then(function(res: InsightResponse) {
                 Log.test(JSON.stringify(res));
+                isf.removeDataset("1").then(function(res: InsightResponse) {
+                    Log.test(JSON.stringify(res));
+                }).catch(function(err: any) {
+                    Log.test(JSON.stringify(err));
+                });
             }).catch(function(err: any){
                 Log.test(JSON.stringify(err));
             });
