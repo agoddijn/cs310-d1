@@ -10,7 +10,38 @@ export interface InsightResponse {
 }
 
 export interface QueryRequest {
+<<<<<<< HEAD
     // you can define your own structure that complies with the EBNF here
+=======
+    WHERE: {}; // For filters
+    OPTIONS: {}; // For options
+}
+
+export interface Course {
+    courses_dept: string;
+    courses_id: string;
+    courses_avg: number;
+    courses_instructor: string;
+    courses_title: string;
+    courses_pass: number;
+    courses_fail: number;
+    courses_audit: number;
+}
+
+export interface zipDat {
+    result: Result[];
+}
+
+export interface Result {
+    Subject: string;
+    Course: string;
+    Avg: number;
+    Professor: string;
+    Title: string;
+    Pass: number;
+    Fail: number;
+    Audit: number;
+>>>>>>> bd83afe4f7d2775207eeb07ccf30a522e5dbe129
 }
 
 export interface IInsightFacade {

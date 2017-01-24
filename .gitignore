@@ -9,4 +9,9 @@ mochawesome-reports/
 node_modules/
 .idea/
 .yarnclean
+<<<<<<< .merge_file_9i6Kx4
 coverage/
+=======
+coverage/
+cache/
+>>>>>>> .merge_file_jv4ete

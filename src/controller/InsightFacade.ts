@@ -1,9 +1,19 @@
 /**
  * This is the main programmatic entry point for the project.
  */
+<<<<<<< HEAD
 import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 
 import Log from "../Util";
+=======
+import {IInsightFacade, InsightResponse, QueryRequest, Course} from "./IInsightFacade";
+
+import Log from "../Util";
+import ZipParser from "./ZipParser";
+import FileSystem from "./FileSystem";
+
+var fs = require("fs");
+>>>>>>> bd83afe4f7d2775207eeb07ccf30a522e5dbe129
 
 export default class InsightFacade implements IInsightFacade {
 
@@ -12,11 +22,68 @@ export default class InsightFacade implements IInsightFacade {
     }
 
     addDataset(id: string, content: string): Promise<InsightResponse> {
+<<<<<<< HEAD
         return null;
     }
 
     removeDataset(id: string): Promise<InsightResponse> {
         return null;
+=======
+        var parser = new ZipParser();
+        return new Promise(function(fulfill, reject) {
+            parser.parse(content).then(function (data: Course[]) {
+
+                FileSystem.check(id).then(function(success: boolean) {
+                    var code: number;
+                    if(success) code = 201;
+                    else code = 204;
+
+                    FileSystem.write(id, data).then(function(success: boolean) {
+                        if (success) {
+                            Log.info("Data successfully cached");
+                            fulfill({code: code, body: {message: "Data successfully added"}});
+                        } else {
+                            Log.info("Data unsuccessfully cached");
+                            reject({code: 400, body: {error: "Data unsuccessfully cached"}});
+                        }
+                    }).catch(function(err: any) {
+                        Log.error("Error in InsightFacade.addDataset() [FileSystem.write()]");
+                        Log.error(err);
+                        reject({code: 400, body: {error: "Could not write file to memory"}});
+                    });
+
+                }).catch(function(err: any) {
+                    Log.error("Error in InsightFacade.addDataset() [FileSystem.check()]");
+                    Log.error(err);
+                    reject({code: 400, body: {error: "Could not access memory"}});
+                });
+
+            }).catch(function (err: any) {
+                Log.error("Error in InsightFacade.addDataset() [zipParser.parse()]");
+                Log.error(err);
+                reject({"code": 400, "error": err.message});
+            });
+        });
+    }
+
+
+    removeDataset(id: string): Promise<InsightResponse> {
+        return new Promise(function(fulfill, reject) {
+            FileSystem.remove(id).then(function(success: boolean) {
+                if (success) {
+                    Log.info("Data successfully removed");
+                    fulfill({code: 202, body: {}});
+                } else {
+                    Log.error("Data could not be removed");
+                    reject({code: 404, body: {}});
+                }
+            }).catch(function(err: any) {
+                Log.error("Error in removeDataset");
+                Log.error(err);
+                reject({code: 404, body: {error: err.message}});
+            });
+        });
+>>>>>>> bd83afe4f7d2775207eeb07ccf30a522e5dbe129
     }
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {
