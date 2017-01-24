@@ -50,7 +50,7 @@ export default class InsightFacade implements IInsightFacade {
             }).catch(function (err: any) {
                 Log.error("Error in InsightFacade.addDataset() [zipParser.parse()]");
                 Log.error(err);
-                reject({"code": 400, "error": err.message});
+                reject({code: 400, body: {error: err.message}});
             });
         });
     }
