@@ -10,9 +10,6 @@ export interface InsightResponse {
 }
 
 export interface QueryRequest {
-<<<<<<< HEAD
-    // you can define your own structure that complies with the EBNF here
-=======
     WHERE: {}; // For filters
     OPTIONS: {}; // For options
 }
@@ -41,7 +38,6 @@ export interface Result {
     Pass: number;
     Fail: number;
     Audit: number;
->>>>>>> bd83afe4f7d2775207eeb07ccf30a522e5dbe129
 }
 
 export interface IInsightFacade {

@@ -1,11 +1,7 @@
 /**
  * This is the main programmatic entry point for the project.
  */
-<<<<<<< HEAD
-import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 
-import Log from "../Util";
-=======
 import {IInsightFacade, InsightResponse, QueryRequest, Course} from "./IInsightFacade";
 
 import Log from "../Util";
@@ -13,7 +9,6 @@ import ZipParser from "./ZipParser";
 import FileSystem from "./FileSystem";
 
 var fs = require("fs");
->>>>>>> bd83afe4f7d2775207eeb07ccf30a522e5dbe129
 
 export default class InsightFacade implements IInsightFacade {
 
@@ -22,13 +17,6 @@ export default class InsightFacade implements IInsightFacade {
     }
 
     addDataset(id: string, content: string): Promise<InsightResponse> {
-<<<<<<< HEAD
-        return null;
-    }
-
-    removeDataset(id: string): Promise<InsightResponse> {
-        return null;
-=======
         var parser = new ZipParser();
         return new Promise(function(fulfill, reject) {
             parser.parse(content).then(function (data: Course[]) {
@@ -83,7 +71,6 @@ export default class InsightFacade implements IInsightFacade {
                 reject({code: 404, body: {error: err.message}});
             });
         });
->>>>>>> bd83afe4f7d2775207eeb07ccf30a522e5dbe129
     }
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {
