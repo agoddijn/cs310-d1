@@ -59,7 +59,7 @@ describe("AddDatasetPassingSpec", function () {
         var cachePath = './cache';
         if( fs.existsSync(cachePath) ) {
             fs.readdirSync(cachePath).forEach(function(file: any,index: any){
-                var curPath = testPath + "/" + file;
+                var curPath = cachePath + "/" + file;
                 fs.unlinkSync(curPath);
             });
             fs.rmdirSync(cachePath);
