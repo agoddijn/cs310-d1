@@ -67,7 +67,7 @@ describe("AddDatasetPassingSpec", function () {
     });
 
     it("It should parse and cache a big zip file", function (done) {
-        this.timeout(100000);
+        this.timeout(300000);
         var filename = "courses";
         var pathToFile: string = testPath + filename + ".zip";
         var zipData = fs.readFileSync(pathToFile);

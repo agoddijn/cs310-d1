@@ -13,6 +13,7 @@ import InsightFacade from "../src/controller/InsightFacade";
 import Log from "../src/Util";
 import {expect} from 'chai';
 import {InsightResponse} from "../src/controller/IInsightFacade";
+import FileSystem from "../src/controller/FileSystem";
 var fs: any = require("fs");
 var testPath = "./test/data/";
 
@@ -45,33 +46,57 @@ describe("AddDatasetfailingSpec", function () {
 
     afterEach(function () {
         Log.test('AfterTest: ' + (<any>this).currentTest.title);
+        var cachePath = './cache';
+        if( fs.existsSync(cachePath) ) {
+            fs.readdirSync(cachePath).forEach(function(file: any,index: any){
+                var curPath = cachePath + "/" + file;
+                fs.unlinkSync(curPath);
+            });
+            fs.rmdirSync(cachePath);
+        }
     });
 
-    it("It should reject given zip file with bad JSON", function () {
+    it("It should reject given zip file with bad JSON", function (done) {
         var filename = "badZip1";
         var pathToFile: string = testPath + filename + ".zip";
         var zipData = fs.readFileSync(pathToFile);
         isf.addDataset(filename, zipData).then(function (res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            expect.fail();
+            done("Should not succeed");
         }).catch(function (err: any) {
             Log.test(JSON.stringify(err));
             sanityCheck(err);
             checkErr(err);
+            FileSystem.check(filename).then(function(exists: boolean) {
+                expect(exists).to.equal(false);
+                done();
+            }).catch(function(err: any) {
+                Log.test(JSON.stringify(err));
+                expect.fail();
+                done(err);
+            });
         });
     });
 
-    it("It should reject given bad zip file", function () {
+    it("It should reject given bad zip file", function (done) {
         var filename = "badZip2";
         var pathToFile: string = testPath + filename + ".zip";
         var zipData = fs.readFileSync(pathToFile);
         isf.addDataset(filename, zipData).then(function (res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            expect.fail();
+            done("Should not succeed");
         }).catch(function (err: any) {
             Log.test(JSON.stringify(err));
             sanityCheck(err);
             checkErr(err);
+            FileSystem.check(filename).then(function(exists: boolean) {
+                expect(exists).to.equal(false);
+                done();
+            }).catch(function(err: any) {
+                Log.test(JSON.stringify(err));
+                expect.fail();
+                done(err);
+            });
         });
     });
 

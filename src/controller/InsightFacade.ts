@@ -53,7 +53,7 @@ export default class InsightFacade implements IInsightFacade {
                 reject({code: 400, body: {error: err.message}});
             });
         });
-    }
+    };
 
 
     removeDataset(id: string): Promise<InsightResponse> {
@@ -72,9 +72,9 @@ export default class InsightFacade implements IInsightFacade {
                 reject({code: 404, body: {error: err.message}});
             });
         });
-    }
+    };
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {
         return null;
-    }
-}
+    };
+};
