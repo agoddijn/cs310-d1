@@ -10,9 +10,9 @@ import {isNullOrUndefined} from "util";
 var JSZip = require("jszip");
 
 interface IZipParser {
-    parse(zipBin: string): Promise<Course[]>;
-    genCourseList(courseDat: zipDat): Promise<Course[]>;
-    genCourse(courseObj: Result): Course;
+    parse(zipBin: string, id: string): Promise<Course[]>;
+    genCourseList(courseDat: zipDat, id: string): Promise<Course[]>;
+    genCourse(courseObj: Result, id: string): Course;
 }
 
 export default class ZipParser implements IZipParser {
@@ -21,7 +21,7 @@ export default class ZipParser implements IZipParser {
         Log.trace("ZipParser::init()");
     }
 
-    public parse(zipBin: string): Promise<Course[]>{
+    public parse(zipBin: string, id: string): Promise<Course[]>{
         var vm = this;
         var zip = new JSZip();
 
@@ -50,7 +50,7 @@ export default class ZipParser implements IZipParser {
                 Promise.all(subPromiseList).then(function(contents: string[]){
                     for (let content of contents) {
                         let courseDat: zipDat = JSON.parse(content);
-                        promiseList.push(vm.genCourseList(courseDat));
+                        promiseList.push(vm.genCourseList(courseDat, id));
                     }
 
                     // Concatenate the course lists
@@ -84,7 +84,7 @@ export default class ZipParser implements IZipParser {
         });
     }
 
-    public genCourseList(courseDat: zipDat): Promise<Course[]> {
+    public genCourseList(courseDat: zipDat, id: string): Promise<Course[]> {
 
         var vm = this;
 
@@ -93,7 +93,7 @@ export default class ZipParser implements IZipParser {
             for (let course of courseDat.result) {
                 try {
                     // Create the course and push it to the course array
-                    toReturn.push(vm.genCourse(course));
+                    toReturn.push(vm.genCourse(course, id));
                 } catch(err) {
                     Log.error("Error in ZipParser.genCourseList() [genCourse()]");
                     Log.error(err);
@@ -104,17 +104,16 @@ export default class ZipParser implements IZipParser {
         });
     }
 
-    public genCourse(courseObj: Result): Course {
-        var course: Course = {
-            courses_id: courseObj.Course,
-            courses_dept: courseObj.Subject,
-            courses_audit: courseObj.Audit,
-            courses_avg: courseObj.Avg,
-            courses_title: courseObj.Title,
-            courses_fail: courseObj.Fail,
-            courses_pass: courseObj.Pass,
-            courses_instructor: courseObj.Professor,
-        };
+    public genCourse(courseObj: Result, id: string): Course {
+        var course: Course = {};
+            course[id + "_id"] = courseObj.Course;
+            course[id + "_dept"] = courseObj.Subject;
+            course[id + "_audit"] = courseObj.Audit;
+            course[id + "_avg"] = courseObj.Avg;
+            course[id + "_title"] = courseObj.Title;
+            course[id + "_fail"] = courseObj.Fail;
+            course[id + "_pass"] = courseObj.Pass;
+            course[id + "_instructor"] = courseObj.Professor;
         return course;
     }
 

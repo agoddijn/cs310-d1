@@ -20,7 +20,7 @@ export default class InsightFacade implements IInsightFacade {
     addDataset(id: string, content: string): Promise<InsightResponse> {
         var parser = new ZipParser();
         return new Promise(function(fulfill, reject) {
-            parser.parse(content).then(function (data: Course[]) {
+            parser.parse(content, id).then(function (data: Course[]) {
 
                 FileSystem.check(id).then(function(success: boolean) {
                     var code: number;
