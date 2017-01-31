@@ -2,7 +2,7 @@
  * Created by alexgoddijn on 27/01/2017.
  */
 
-import {Log, validKeys, validLogic} from '../Util';
+import {Log, validKeys, numKeys} from '../Util';
 import {Course, QueryRequest, Body} from './IInsightFacade';
 
 
@@ -231,7 +231,10 @@ export default class QueryGenerator {
     }
 
     public static isNum(key: string): boolean {
-        return ((key.indexOf("_avg") >= 0) || (key.indexOf("_pass") >= 0) || (key.indexOf("_fail") >= 0) || (key.indexOf("_audit") >= 0));
+        for(let numKey of numKeys) {
+            if (key.indexOf(numKey) >= 0)  return true;
+        }
+        return false;
     }
 
     public static columns(courses: Course[], columns: string[]): Promise<Array<{}>> {
@@ -240,8 +243,7 @@ export default class QueryGenerator {
             for (let course of courses) {
                 var obj: any = {};
                 for (let crit of columns) {
-                    if (QueryGenerator.isNum(crit)) obj[crit] = <number> course[crit];
-                    else obj[crit] = <string> course[crit];
+                    obj[crit] = course[crit];
                 }
                 toReturn.push(obj);
             }

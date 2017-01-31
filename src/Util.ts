@@ -31,6 +31,6 @@ export const validKeys: string[] = [
     "_id", "_dept", "_avg", "_instructor", "_title", "_pass", "_fail", "_audit", "_uuid"
 ];
 
-export const validLogic: string[] = [
-    "AND", "OR", "LT", "GT", "EQ", "IS", "NOT"
+export const numKeys: string[] = [
+    "_avg", "_pass", "_fail", "_audit"
 ];
