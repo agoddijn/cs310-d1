@@ -10,8 +10,11 @@ export interface InsightResponse {
 }
 
 export interface QueryRequest {
-    WHERE: {}; // For filters
-    OPTIONS: {}; // For options
+    [key: string]: any;
+}
+
+export interface Body {
+    [key: string]: any;
 }
 
 export interface Course {
@@ -31,6 +34,7 @@ export interface Result {
     Pass: number;
     Fail: number;
     Audit: number;
+    id: number;
 }
 
 export interface IInsightFacade {

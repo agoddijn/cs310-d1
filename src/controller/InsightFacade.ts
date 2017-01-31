@@ -5,9 +5,10 @@
 
 import {IInsightFacade, InsightResponse, QueryRequest, Course} from "./IInsightFacade";
 
-import Log from "../Util";
+import {Log} from "../Util";
 import ZipParser from "./ZipParser";
 import FileSystem from "./FileSystem";
+import QueryGenerator from "./QueryGenerator";
 
 var fs = require("fs");
 
@@ -75,6 +76,55 @@ export default class InsightFacade implements IInsightFacade {
     };
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {
-        return null;
+        return new Promise(function(fulfill, reject) {
+            QueryGenerator.checkQuery(query).then(function(isValid: boolean) {
+                if(isValid) {
+                    QueryGenerator.checkId(query).then(function(ids: string[]) {
+
+                        FileSystem.checkFiles(ids).then(function(missing: string[]) {
+
+                            if (missing.length == 0) {
+                                var data: Course[] = new Array<Course>();
+                                var promises: Promise<Course[]>[] = new Array<Promise<Course[]>>();
+                                for (let id of ids) {
+                                    promises.push(FileSystem.read(id));
+                                }
+                                Promise.all(promises).then(function(courselists: Course[][]) {
+                                    for (let courses of courselists) {
+                                        data = data.concat(courses);
+                                    }
+
+                                    QueryGenerator.filter(data, query).then(function(filtered: Array<{}>) {
+                                        fulfill({code: 200, body: {render: 'TABLE', result: filtered}});
+                                    }).catch(function(err: any) {
+                                        Log.error(err.message);
+                                        reject({code: 400, body: {error: err.message}});
+                                    });
+
+                                }).catch(function(err: any) {
+                                    Log.error(JSON.stringify(err.message));
+                                    reject({code: 424, body: {missing: "ids"}});
+                                });
+                            } else {
+                                reject({code: 424, body: {missing: missing}});
+                            }
+
+                        }).catch(function(err: any) {
+                            reject(err);
+                            // TODO
+                        });
+
+                    }).catch(function(err: any) {
+                        Log.error(err.message);
+                        reject(err);
+                    });
+                } else {
+                    reject({code: 400, body: {error: "invalid query"}});
+                }
+            }).catch(function(err: any) {
+                Log.error(err.message);
+                reject({code: 400, body: {error: "invalid query"}});
+            })
+        });
     };
 };

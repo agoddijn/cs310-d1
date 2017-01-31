@@ -10,7 +10,7 @@
  */
 
 import InsightFacade from "../src/controller/InsightFacade";
-import Log from "../src/Util";
+import {Log} from "../src/Util";
 import {expect} from 'chai';
 import {InsightResponse} from "../src/controller/IInsightFacade";
 import FileSystem from "../src/controller/FileSystem";
@@ -72,7 +72,6 @@ describe("AddDatasetfailingSpec", function () {
                 done();
             }).catch(function(err: any) {
                 Log.test(JSON.stringify(err));
-                expect.fail();
                 done(err);
             });
         });
@@ -94,7 +93,6 @@ describe("AddDatasetfailingSpec", function () {
                 done();
             }).catch(function(err: any) {
                 Log.test(JSON.stringify(err));
-                expect.fail();
                 done(err);
             });
         });

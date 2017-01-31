@@ -6,7 +6,7 @@
  */
 
 import InsightFacade from "../src/controller/InsightFacade";
-import Log from "../src/Util";
+import {Log} from "../src/Util";
 import {expect} from 'chai';
 import {InsightResponse, Course} from "../src/controller/IInsightFacade";
 import FileSystem from "../src/controller/FileSystem";
@@ -43,6 +43,7 @@ describe("AddDatasetPassingSpec", function () {
     }
 
     before(function () {
+        let isf = new InsightFacade
         Log.test('Before: ' + (<any>this).test.parent.title);
     });
 

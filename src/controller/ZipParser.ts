@@ -2,7 +2,7 @@
  * Created by alexgoddijn on 22/01/2017.
  */
 
-import Log from "../Util";
+import {Log} from "../Util";
 import {Course, zipDat, Result} from "./IInsightFacade";
 import {isUndefined} from "util";
 import {isNull} from "util";
@@ -114,6 +114,7 @@ export default class ZipParser implements IZipParser {
             course[id + "_fail"] = courseObj.Fail;
             course[id + "_pass"] = courseObj.Pass;
             course[id + "_instructor"] = courseObj.Professor;
+            course[id + "_uuid"] = courseObj.id;
         return course;
     }
 

@@ -4,7 +4,7 @@
  * @param msg
  */
 /* tslint:disable:no-console */
-export default class Log {
+export class Log {
 
     public static trace(msg: string) {
         console.log("<T> " + new Date().toLocaleString() + ": " + msg);
@@ -26,3 +26,11 @@ export default class Log {
         console.log("<X> " + new Date().toLocaleString() + ": " + msg);
     }
 }
+
+export const validKeys: string[] = [
+    "_id", "_dept", "_avg", "_instructor", "_title", "_pass", "_fail", "_audit", "_uuid"
+];
+
+export const validLogic: string[] = [
+    "AND", "OR", "LT", "GT", "EQ", "IS", "NOT"
+];
