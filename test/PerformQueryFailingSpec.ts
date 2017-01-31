@@ -179,7 +179,7 @@ describe("PerformQueryFailingSpec", function () {
             sanityCheck(err);
             expect(err.code).to.equal(424);
             expect(err.body).to.have.key("missing");
-            expect(err.body.error).to.equal(notFound1.body.missing);
+            expect(err.body.missing).to.deep.equal(["courses"]);
             done();
         }).catch(function(err: any) {
             done(err);
@@ -195,7 +195,7 @@ describe("PerformQueryFailingSpec", function () {
             sanityCheck(err);
             expect(err.code).to.equal(424);
             expect(err.body).to.have.key("missing");
-            expect(err.body.error).to.equal(notFound2.body.missing);
+            expect(err.body.missing).to.deep.equal(["courses2", "courses"]);
             done();
         }).catch(function(err: any) {
             done(err);
