@@ -6,7 +6,7 @@
  */
 
 import InsightFacade from "../src/controller/InsightFacade";
-import Log from "../src/Util";
+import {Log} from "../src/Util";
 import {expect} from 'chai';
 import {InsightResponse, Course} from "../src/controller/IInsightFacade";
 import FileSystem from "../src/controller/FileSystem";
@@ -23,26 +23,27 @@ describe("AddDatasetPassingSpec", function () {
         expect(response.code).to.be.a('number');
     }
 
-    function courseCheck(response: Course) {
-        expect(response).to.have.property('courses_dept');
-        expect(response.courses_dept).to.be.a('string');
-        expect(response).to.have.property('courses_id');
-        expect(response.courses_id).to.be.a('string');
-        expect(response).to.have.property('courses_avg');
-        expect(response.courses_avg).to.be.a('number');
-        expect(response).to.have.property('courses_instructor');
-        expect(response.courses_instructor).to.be.a('string');
-        expect(response).to.have.property('courses_title');
-        expect(response.courses_title).to.be.a('string');
-        expect(response).to.have.property('courses_pass');
-        expect(response.courses_pass).to.be.a('number');
-        expect(response).to.have.property('courses_fail');
-        expect(response.courses_fail).to.be.a('number');
-        expect(response).to.have.property('courses_audit');
-        expect(response.courses_audit).to.be.a('number');
+    function courseCheck(response: Course, id: string) {
+        expect(response).to.have.property(id + "_dept");
+        expect(response[id + "_dept"]).to.be.a('string');
+        expect(response).to.have.property(id + "_id");
+        expect(response[id + "_id"]).to.be.a('string');
+        expect(response).to.have.property(id + "_avg");
+        expect(response[id + "_avg"]).to.be.a('number');
+        expect(response).to.have.property(id + "_instructor");
+        expect(response[id + "_instructor"]).to.be.a('string');
+        expect(response).to.have.property(id + "_title");
+        expect(response[id + "_title"]).to.be.a('string');
+        expect(response).to.have.property(id + "_pass");
+        expect(response[id + "_pass"]).to.be.a('number');
+        expect(response).to.have.property(id + "_fail");
+        expect(response[id + "_fail"]).to.be.a('number');
+        expect(response).to.have.property(id + "_audit");
+        expect(response[id + "_audit"]).to.be.a('number');
     }
 
     before(function () {
+        let isf = new InsightFacade
         Log.test('Before: ' + (<any>this).test.parent.title);
     });
 
@@ -67,7 +68,7 @@ describe("AddDatasetPassingSpec", function () {
     });
 
     it("It should parse and cache a big zip file", function (done) {
-        this.timeout(100000);
+        this.timeout(300000);
         var filename = "courses";
         var pathToFile: string = testPath + filename + ".zip";
         var zipData = fs.readFileSync(pathToFile);
@@ -78,7 +79,7 @@ describe("AddDatasetPassingSpec", function () {
             FileSystem.read(filename).then(function (data1: Course[]) {
 
                 expect(data1.length).to.equal(64612);
-                courseCheck(data1[0]);
+                courseCheck(data1[0], filename);
 
                 isf.addDataset(filename, zipData).then(function (res: InsightResponse) {
                     Log.test(JSON.stringify(res));
@@ -88,7 +89,7 @@ describe("AddDatasetPassingSpec", function () {
                     FileSystem.read(filename).then(function (data2: Course[]) {
 
                         expect(data2.length).to.equal(64612);
-                        courseCheck(data2[0]);
+                        courseCheck(data2[0], filename);
 
                         isf.removeDataset(filename).then(function (res: InsightResponse) {
                             Log.test(JSON.stringify(res));

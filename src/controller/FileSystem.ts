@@ -3,7 +3,7 @@
  */
 
 import {Course} from "./IInsightFacade";
-import Log from "../Util";
+import {Log} from "../Util";
 var fs = require("fs");
 var rootPath = "./cache/";
 
@@ -50,6 +50,25 @@ export default class FileSystem {
                 reject(err);
             }
         });
+    }
+
+    public static checkFiles(filenames: string[]): Promise<string[]> {
+        return new Promise(function(fulfill, reject) {
+            var missing: string[] = new Array<string>();
+            var promises: Promise<boolean>[] = new Array<Promise<boolean>>();
+            for (let filename of filenames) {
+                promises.push(FileSystem.check(filename));
+            }
+            Promise.all(promises).then(function(exists: boolean[]) {
+                for (let i = 0; i < exists.length; i++) {
+                    if(!exists[i]) missing.push(filenames[i]);
+                }
+                fulfill(missing);
+            }).catch(function(err: any) {
+                Log.error(err.message);
+                reject(err);
+            });
+        })
     }
 
     public static remove(filename: string): Promise<boolean> {

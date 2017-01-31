@@ -6,10 +6,11 @@
  */
 
 import {expect} from 'chai';
-import Log from "../src/Util";
+import {Log} from "../src/Util";
 import {InsightResponse, QueryRequest, IInsightFacade} from "../src/controller/IInsightFacade";
-import JSON = Mocha.reporters.JSON;
 import InsightFacade from "../src/controller/InsightFacade";
+var fs: any = require("fs");
+var testPath = "./test/data/";
 
 
 describe("PerformQueryPassing", function () {
@@ -21,10 +22,18 @@ describe("PerformQueryPassing", function () {
         expect(response.code).to.be.a('number');
     }
 
-    var insightFacade : InsightFacade = null;
+    var insightFacade: InsightFacade = new InsightFacade();
 
-    before(function () {
+    before(function (done) {
         Log.test('Before: ' + (<any>this).test.parent.title);
+        this.timeout(300000);
+        let data = fs.readFileSync(testPath + "courses.zip");
+        insightFacade.addDataset("courses", data).then(function(res: InsightResponse) {
+            done();
+        }).catch(function(err: any) {
+            Log.test(JSON.stringify(err));
+            done("Could not load dataset");
+        })
     });
 
     beforeEach(function () {
@@ -34,6 +43,14 @@ describe("PerformQueryPassing", function () {
 
     after(function () {
         Log.test('After: ' + (<any>this).test.parent.title);
+        var cachePath = './cache';
+        if( fs.existsSync(cachePath) ) {
+            fs.readdirSync(cachePath).forEach(function(file: any,index: any){
+                var curPath = cachePath + "/" + file;
+                fs.unlinkSync(curPath);
+            });
+            fs.rmdirSync(cachePath);
+        }
     });
 
     afterEach(function () {
@@ -41,68 +58,73 @@ describe("PerformQueryPassing", function () {
         insightFacade = null;
     });
 
-    it("Simple query with GT", function () {
+    it("Simple query with GT", function (done) {
         let queryRequest = require("./data/simpleGTquery.json");
         let objBody = require("./data/simpleGTbody.json");
-        return insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
+        insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
             sanityCheck(value);
             expect(value.code).to.equal(200);
-            expect(value.body).to.equal(objBody);
+            expect(value.body).to.deep.equal(objBody);
+            done();
         }).catch(function (err) {
             Log.test('Error:' + err);
-            expect.fail();
+            done(err);
         });
     });
 
-    it("Simple query with EQ", function () {
+    it("Simple query with EQ", function (done) {
         let queryRequest = require("./data/simpleEQquery.json");
         let objBody = require("./data/simpleEQbody.json");
-        return insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
+        insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
             sanityCheck(value);
             expect(value.code).to.equal(200);
-            expect(value.body).to.equal(objBody);
+            expect(value.body).to.deep.equal(objBody);
+            done();
         }).catch(function (err) {
             Log.test('Error:' + err);
-            expect.fail();
+            done(err);
         });
     });
 
-    it("Simple query with LT", function () {
+    it("Simple query with LT", function (done) {
         let queryRequest = require("./data/simpleLTquery.json");
         let objBody = require("./data/simpleLTbody.json");
-        return insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
+        insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
             sanityCheck(value);
             expect(value.code).to.equal(200);
-            expect(value.body).to.equal(objBody);
+            expect(value.body).to.deep.equal(objBody);
+            done();
         }).catch(function (err) {
             Log.test('Error:' + err);
-            expect.fail();
+            done(err);
         });
     });
 
-    it("Complex query", function () {
+    it("Complex query", function (done) {
         let queryRequest = require("./data/complexQuery.json");
         let objBody = require("./data/complexQueryBody.json");
-        return insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
+        insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
             sanityCheck(value);
             expect(value.code).to.equal(200);
-            expect(value.body).to.equal(objBody);
+            expect(value.body).to.deep.equal(objBody);
+            done();
         }).catch(function (err) {
             Log.test('Error:' + err);
-            expect.fail();
+            done(err);
         });
     });
 
-    it("Complex query with NOT", function () {
+    it("Complex query with NOT", function (done) {
         let queryRequest = require("./data/complexQueryNOT.json");
         let objBody = require("./data/complexQueryNOTbody.json");
-        return insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
+        insightFacade.performQuery(queryRequest).then(function (value: InsightResponse) {
             sanityCheck(value);
             expect(value.code).to.equal(200);
-            expect(value.body).to.equal(objBody);
+            expect(value.body).to.deep.equal(objBody);
+            done();
         }).catch(function (err) {
             Log.test('Error:' + err);
-            expect.fail();
+            done(err);
         });
     });
 

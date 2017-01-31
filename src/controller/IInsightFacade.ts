@@ -10,19 +10,15 @@ export interface InsightResponse {
 }
 
 export interface QueryRequest {
-    WHERE: {}; // For filters
-    OPTIONS: {}; // For options
+    [key: string]: any;
+}
+
+export interface Body {
+    [key: string]: any;
 }
 
 export interface Course {
-    courses_dept: string;
-    courses_id: string;
-    courses_avg: number;
-    courses_instructor: string;
-    courses_title: string;
-    courses_pass: number;
-    courses_fail: number;
-    courses_audit: number;
+    [key: string]: any;
 }
 
 export interface zipDat {
@@ -38,6 +34,7 @@ export interface Result {
     Pass: number;
     Fail: number;
     Audit: number;
+    id: number;
 }
 
 export interface IInsightFacade {
