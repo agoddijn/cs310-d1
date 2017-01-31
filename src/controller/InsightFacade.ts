@@ -119,11 +119,11 @@ export default class InsightFacade implements IInsightFacade {
                         reject(err);
                     });
                 } else {
-                    reject({code: 400, body: {error: "invalid query"}});
+                    reject({code: 400, body: {error: "Query is not valid"}});
                 }
             }).catch(function(err: any) {
                 Log.error(err.message);
-                reject({code: 400, body: {error: "invalid query"}});
+                reject({code: 400, body: {error: "Query is not valid"}});
             })
         });
     };

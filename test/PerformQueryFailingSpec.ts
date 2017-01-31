@@ -189,7 +189,7 @@ describe("PerformQueryFailingSpec", function () {
     it("It should throw 424 not found given multiple non existent id's", function (done) {
         isf.performQuery(badReq4).then(function(res: InsightResponse) {
             Log.test(JSON.stringify(res));
-            done("Should not accept query");;
+            done("Should not accept query");
         }).catch(function(err: any){
             Log.test(JSON.stringify(err));
             sanityCheck(err);
