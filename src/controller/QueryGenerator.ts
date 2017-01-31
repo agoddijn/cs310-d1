@@ -149,7 +149,7 @@ export default class QueryGenerator {
             let filter = query["WHERE"];
             var filtered: Course[] = new Array<Course>();
             for (let course of courses) {
-                if(QueryGenerator.filterOne(course, filter, true)) filtered.push(course);
+                if(QueryGenerator.filterOne(course, filter)) filtered.push(course);
             }
             QueryGenerator.sort(filtered, query["OPTIONS"]).then(function(sorted: Course[]) {
                 QueryGenerator.columns(sorted, query["OPTIONS"]["COLUMNS"]).then(function(toReturn: Array<{}>) {
